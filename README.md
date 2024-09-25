@@ -1,3 +1,4 @@
+
 # ChitChat - Chat App (with ReactNative)
 
 
@@ -57,3 +58,4 @@ This project is licensed under the MIT License.
 
 I am super thankful to have found this **Full Stack Web Dev Training** I am on with **CareerFoundry**. They provide a variety of trainings for digital careers. Go check them out!
 https://careerfoundry.com/
+

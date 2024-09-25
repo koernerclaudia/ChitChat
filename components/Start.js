@@ -16,7 +16,7 @@ const Start = ({ navigation }) => {
     <View style={styles.container}>
     
     <View style={styles.titleBox}>
-    <Text style={styles.title}>ChitChat</Text>
+    <Text style={styles.header}>ChitChat</Text>
     </View>
    
     <View style={styles.entryBox}>
@@ -44,15 +44,10 @@ const Start = ({ navigation }) => {
            ))}
         </View>
         <View style={styles.button} >
-          <TouchableOpacity 
-            
-            onPress={() => navigation.navigate('Chat', { name, backgroundColor: background })}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate('Chat', { name, backgroundColor: background })}>
             <Text style={styles.buttonText}>Start Chatting!</Text>
           </TouchableOpacity>
       </View></View></View>
-     
-     
     </ImageBackground>
   );
 }
@@ -72,7 +67,11 @@ const styles = StyleSheet.create({
       flex:6,
       justifyContent: 'center',
       alignItems: 'center',
-      
+    },
+    header: {
+      fontSize: 45,
+      fontWeight: '600',
+      color: 'white',
     },
     textInput: {
       width: "88%",
@@ -81,6 +80,8 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 5,
       fontSize: 16,
+      fontWeight: '300',
+      color: '#757083', opacity: 50,
       borderColor: 'orange',
       
     },
@@ -99,14 +100,16 @@ const styles = StyleSheet.create({
   button: {
     width: "90%",
     alignItems: 'center',
-    backgroundColor: 'orange',
+    backgroundColor: '#757083',
     padding: 10,
     borderRadius: 5,
     
 
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white',
   },
   title: {
     fontSize: 55,
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
 
   },
   chooseBgColor:{
-    color: 'black',
+    color: '#757083',
     fontSize: 16,
     fontWeight: '300',
     opacity: 100,

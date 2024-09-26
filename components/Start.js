@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView} from 'react-native';
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -47,7 +47,9 @@ const Start = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('Chat', { name, backgroundColor: background })}>
             <Text style={styles.buttonText}>Start Chatting!</Text>
           </TouchableOpacity>
-      </View></View></View>
+      </View></View>
+      {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
+      </View>
     </ImageBackground>
   );
 }

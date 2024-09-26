@@ -44,6 +44,7 @@ and location data.
     - iPhone 14 / ExpoGo App
 - CLI: Expo Dev & SDKs // https://expo.dev/
 - Code Editor: VS-Code
+- Gifted Chat: UI Library
 - GenAI: Chat GPT & Claude to figure out coding patterns and methods.
 - 
 ## Deployment

@@ -3,9 +3,10 @@ import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, P
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
-  const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE',]; // defining the colours to choose from
-  const [background, setBackground] = useState('');
+  const colors = ['#465362', '#4E5090', '#9BC5D4', '#F1E1CB']; // defining the colours to choose from
+  const [background, setBackground] = useState(colors[0]);
 
+  const defaultBackgroundColor = '#465362'; // setting the default background color
 
   return (
     <ImageBackground 
@@ -16,7 +17,10 @@ const Start = ({ navigation }) => {
     <View style={styles.container}>
     
     <View style={styles.titleBox}>
-    <Text style={styles.header}>ChitChat</Text>
+    <Text>
+  <Text style={styles.chit}>Chit</Text>
+  <Text style={styles.chat}>Chat</Text>
+</Text>
     </View>
    
     <View style={styles.entryBox}>
@@ -35,19 +39,20 @@ const Start = ({ navigation }) => {
                accessibilityRole="button"
                accessibilityHint="Lets you choose background color for your chat screen"
                style={[
-                 styles.colorButton,
-                 { backgroundColor: color },
-                 background === color && styles.selectedColor,
-               ]}
-               onPress={() => setBackground(color)}
-             />
+                styles.colorButton,
+                { backgroundColor: color },
+                background === color && styles.selectedColor, // Apply orange border if selected
+              ]}
+              onPress={() => setBackground(color)}
+            />
            ))}
         </View>
         <View style={styles.button} >
-          <TouchableOpacity onPress={() => navigation.navigate('Chat', { name, backgroundColor: background })}>
-            <Text style={styles.buttonText}>Start Chatting!</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Chat', { name, backgroundColor: background || defaultBackgroundColor })}>
+        <Text style={styles.buttonText}>Start Chatting!</Text>
           </TouchableOpacity>
       </View></View>
+      { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
       {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
       </View>
     </ImageBackground>
@@ -70,10 +75,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    header: {
+    chit: {
       fontSize: 45,
       fontWeight: '600',
       color: 'white',
+    },
+    chat: {
+      fontSize: 45,
+      fontWeight: '600',
+      color: 'orange',
     },
     textInput: {
       width: "88%",
@@ -83,7 +93,7 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       fontSize: 16,
       fontWeight: '300',
-      color: '#757083', opacity: 50,
+      color: '#465362',
       borderColor: 'orange',
       
     },
@@ -102,25 +112,17 @@ const styles = StyleSheet.create({
   button: {
     width: "90%",
     alignItems: 'center',
-    backgroundColor: '#757083',
+    backgroundColor: 'orange',
     padding: 10,
     borderRadius: 5,
-    
-
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
   },
-  title: {
-    fontSize: 55,
-    fontWeight: 'bold',
-    color: 'orange',
-
-  },
   chooseBgColor:{
-    color: '#757083',
+    color: '#465362',
     fontSize: 16,
     fontWeight: '300',
     opacity: 100,

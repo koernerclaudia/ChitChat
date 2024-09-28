@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Platform, KeyboardAvoidingView } from 'react-native';
 import { GiftedChat, Bubble, Send, InputToolbar } from "react-native-gifted-chat";
 import { format } from 'date-fns'; // Use date-fns or another date formatting library
+import { collection, onSnapshot, query, addDoc } from "firebase/firestore";
+import { orderBy } from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
-  const { name, backgroundColor } = route.params;
+const Chat = ({ route, navigation, db }) => {
+  const { name, backgroundColor, userID } = route.params;
   const [messages, setMessages] = useState([]);
 
   const onSend = (newMessages) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
-  };
+    addDoc(collection(db, "messages"), newMessages[0])
+  }
 
   // Custom render function for the "Send" button
   const renderSend = (props) => {
@@ -32,29 +34,25 @@ const Chat = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer wannabe...',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-      {
-        _id: 2,
-        text: `${name} has entered the chat!`,
-        createdAt: new Date(),
-        system: true, // Marking this message as a system message
-      },
-    ]);
-  }, [name]);
-
-  useEffect(() => {
     navigation.setOptions({ title: name });
-  }, [name]);
+ const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+ const unsubMessages = onSnapshot(q, (docs) => {
+   let newMessages = [];
+   docs.forEach(doc => {
+     newMessages.push({
+       id: doc.id,
+       ...doc.data(),
+       createdAt: new Date(doc.data().createdAt.toMillis())
+     })
+   })
+   setMessages(newMessages);
+ })
+ return () => {
+   if (unsubMessages) unsubMessages();
+ }
+}, 
+ []);
+
 
   // Function to determine if the color is light or dark
   const isLightColor = (hex) => {
@@ -117,8 +115,9 @@ const Chat = ({ route, navigation }) => {
         messages={messages}
         onSend={messages => onSend(messages)}
         user={{
-          _id: 1,
-        }}
+          _id: userID,
+          name: name
+      }}
         renderSend={renderSend} // Custom renderSend to style "Send"
         renderInputToolbar={renderInputToolbar} // Custom input toolbar for message input
         renderMessage={renderMessage}

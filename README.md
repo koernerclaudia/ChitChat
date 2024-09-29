@@ -8,7 +8,9 @@ This is another app I created uring my studies with CareerFoundry. The task was 
 
 ## TechStack:
 
-ReactNative
+Build: ReactNative with GiftedChat Library & Expo
+Data storage: Google Firebase
+Testing: iOS Simulator, Android Emulator
 
 ## Key features & Components:
 

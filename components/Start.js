@@ -3,8 +3,10 @@ import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, P
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 
+
 const Start = ({ navigation }) => {
   const auth = getAuth();
+  // users get authenticated by Firebase
 
   const signInUser = () => {
     signInAnonymously(auth)
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   titleBox: {
-      flex:6,
+      flex:7,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
       color: 'orange',
     },
     textInput: {
-      width: "88%",
+      width: "90%",
       backgroundColor: 'white',
       padding: 15,
       borderWidth: 1,
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
       
     },
     entryBox: {
-      flex:6,
+      flex:5,
       backgroundColor: 'white', 
       width: '90%',
       marginTop: 25,
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: 'center',
     backgroundColor: 'orange',
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
   },
   buttonText: {
@@ -141,10 +143,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '300',
     opacity: 100,
+   
   },
   colorButtonContainer:{
     flexDirection: 'row',
     justifyContent: 'center',
+  
   },
   colorButton: {
     width: 40,

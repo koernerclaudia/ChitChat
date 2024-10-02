@@ -13,6 +13,8 @@ import { useNetInfo }from '@react-native-community/netinfo';
 import { useEffect } from 'react';
 import { LogBox, Alert, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
+import { getStorage } from "firebase/storage";
+
 
   // Create the navigator
   const Stack = createNativeStackNavigator();
@@ -44,6 +46,8 @@ useEffect(() => {
 
     // Initialize Cloud Firestore and get a reference to the service
     const db = getFirestore(app);
+    const storage = getStorage(app);
+
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -60,7 +64,12 @@ useEffect(() => {
         <Stack.Screen
           name="Chat"
         >
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <Chat
+            isConnected={connectionStatus.isConnected}
+            db={db}
+            storage={storage}
+            {...props}
+          />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

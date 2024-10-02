@@ -1,45 +1,15 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, KeyboardAvoidingView, TouchableOpacity, } from 'react-native';
+import { StyleSheet, View, Text, Platform, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { GiftedChat, Bubble, Send, InputToolbar } from "react-native-gifted-chat";
 import { format } from 'date-fns'; // Use date-fns or another date formatting library
-import { collection, onSnapshot, query, addDoc, where, orderBy } from "firebase/firestore";
+import { collection, onSnapshot, query, addDoc, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage}) => {
   const { name, backgroundColor, userID } = route.params;
   const [messages, setMessages] = useState([]);
-
-  const onSend = (newMessages) => {
-    addDoc(collection(db, "messages"), newMessages[0])
-  }
-
-  // Custom render function for the "Send" button
-  const renderSend = (props) => {
-    return (
-      <Send {...props}>
-        <View style={styles.sendButtonContainer}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </View>
-      </Send>
-    );
-  };
-
-// Retrieve messages from server / Firebase, if there are any.
-  const loadCachedChat = async () => {
-    const cachedChats = await AsyncStorage.getItem("messages") || [];
-    setMessages(JSON.parse(cachedChats));
-  }
-  
-
-  const deleteCachedMessages = async () => {
-    try {
-      await AsyncStorage.removeItem("messages");
-      console.log("Cached messages deleted successfully.");
-      setMessages([]); // Clear local state messages
-    } catch (error) {
-      console.log("Failed to delete cached messages:", error);
-    }
-  };
 
   let unsubMessages;
 
@@ -66,6 +36,12 @@ return () => {
 }, [isConnected]);
 
 
+// Retrieve messages from server / Firebase, if there are any.
+const loadCachedChat = async () => {
+  const cachedChats = await AsyncStorage.getItem("messages") || [];
+  setMessages(JSON.parse(cachedChats));
+}
+
 // Save messages to cache and send to Firebase when back online
 const cacheMessages = async (MessagesToCache) => {
   try {
@@ -75,13 +51,50 @@ const cacheMessages = async (MessagesToCache) => {
   }
 }
 
-// The text field to enter text is available when the user is on a network. When a user is offline the text field is not visible.
+  
+
+  // The text field to enter text is available when the user is on a network. When a user is offline the text field is not visible.
 // Offline users can see messages but can’t compose new messages.
 const renderInputToolbar = (props) => {
   if (isConnected) return <InputToolbar {...props} containerStyle={styles.inputToolbarContainer} // Customize the input toolbar container style
   />;
   else return null;
  };
+
+  // Custom render function for the "Send" button
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View style={styles.sendButtonContainer}>
+          <Text style={styles.sendButtonText}>Send</Text>
+        </View>
+      </Send>
+    );
+  };
+
+  const onSend = (newMessages) => {
+    addDoc(collection(db, "messages"), newMessages[0])
+    console.log("Message sent:", messages);
+  }
+
+  
+  
+
+  const deleteCachedMessages = async () => {
+    try {
+      await AsyncStorage.removeItem("messages");
+      console.log("Cached messages deleted successfully.");
+      setMessages([]); // Clear local state messages
+    } catch (error) {
+      console.log("Failed to delete cached messages:", error);
+    }
+  };
+
+  
+
+
+
+
 
   // Function to determine if the color is light or dark
   const isLightColor = (hex) => {
@@ -138,18 +151,61 @@ const renderInputToolbar = (props) => {
     }} />;
   };
 
+  // Custom component for the action button
+  const renderCustomActions = (props) => {
+    return <CustomActions userID={userID} onSend={onSend} storage={storage} {...props} onTyping={handleTyping}/>;
+  };
+
+  const renderCustomView = (props) => {
+    const { currentMessage} = props;
+    if (currentMessage.location) {
+      return (
+          <MapView
+            style={{width: 150,
+              height: 100,
+              borderRadius: 13,
+              margin: 3}}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+      );
+    }
+    return null;
+  }
+
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleSend = (messages = []) => {
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+      setIsTyping(false); // User has finished sending, stop typing indicator
+  };
+  
+  const handleTyping = (status) => {
+      setIsTyping(status); // Set the typing status
+  };
+
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <GiftedChat
+      
+
         messages={messages}
-        onSend={messages => onSend(messages)}
-        user={{
-          _id: userID,
-          name: name
-      }}
-        renderSend={renderSend} // Custom renderSend to style "Send"
-        renderInputToolbar={renderInputToolbar} // Custom input toolbar for message input
         renderMessage={renderMessage}
+        renderSend={renderSend}
+        renderInputToolbar={renderInputToolbar} // Custom input toolbar for message input
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
+        onSend={(messages) => handleSend(messages)}
+        user={{
+            _id: userID,
+            name: 'Your Name',
+        }}
+        isTyping={isTyping} // Pass the typing status to Gifted Chat
+      
       />
 
  {/* Button to delete cached messages - messages are only deleted locally, not from Firebase. Works in online and offline mode. */}

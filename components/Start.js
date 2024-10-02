@@ -3,10 +3,10 @@ import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, P
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 
-
 const Start = ({ navigation }) => {
   const auth = getAuth();
   // users get authenticated by Firebase
+  const [name, setName] = useState('');
 
   const signInUser = () => {
     signInAnonymously(auth)
@@ -19,7 +19,6 @@ const Start = ({ navigation }) => {
       })
   }
 
-  const [name, setName] = useState('');
   const colors = ['#465362', '#4E5090', '#9BC5D4', '#F1E1CB']; // defining the colours to choose from
   const [background, setBackground] = useState(colors[0]);
 

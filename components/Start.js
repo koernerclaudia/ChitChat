@@ -5,6 +5,7 @@ import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
   const auth = getAuth();
+
   // users get authenticated by Firebase
   const [name, setName] = useState('');
 
@@ -19,9 +20,11 @@ const Start = ({ navigation }) => {
       })
   }
 
+  // Background colors for the chat screen
   const colors = ['#465362', '#4E5090', '#9BC5D4', '#F1E1CB']; // defining the colours to choose from
   const [background, setBackground] = useState(colors[0]);
 
+  // Default background color, if the user does not pick one
   const defaultBackgroundColor = '#465362'; // setting the default background color
 
   return (
@@ -29,16 +32,13 @@ const Start = ({ navigation }) => {
     source={require('../assets/BackgroundImage.png')} // Setting the background image for the start screen
     style={styles.backgroundImage}
   >
-      
     <View style={styles.container}>
-    
     <View style={styles.titleBox}>
     <Text>
   <Text style={styles.chit}>Chit</Text>
   <Text style={styles.chat}>Chat</Text>
 </Text>
     </View>
-   
     <View style={styles.entryBox}>
       <TextInput
         style={styles.textInput}

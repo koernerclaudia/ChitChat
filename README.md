@@ -9,7 +9,8 @@ The task was to build a chat app for mobile devices using React Native. The app 
 
 ## TechStack:
 
-- **Build**: ReactNative with GiftedChat Library & Expo
+- **Build**: ReactNative with Expo
+- ** UI Libraries**: GiftedChat (and more...) Navigation, Maps...
 - **Data storage**: Google Firebase
 - **Testing**: iOS Simulator, Android Emulator, iPhone 14
 
@@ -20,11 +21,17 @@ before joining the chat (Screen 2 of 2).
 - The app authenticates users anonymously via Google Firebase authentication.
 - This 2nd screen displaying the conversation between chat members.
 - People can send
-    - text
+    - text messages
     - images from their local photo library app
     - take images and send them
     - send their location (map integration, connection to native map app).
 - Data can be stored online (Firebase Cloud Storage) and offline, users can clear the screen.
+- extra: I have added system messages that show when a person has entered the chat.
+
+## WIP features:
+
+- Names of Chat participants are appearing in the speech bubbles, but not yet when imagery / maps are sent.
+- CSS needs to be fixed a bit for light/ dark background adjustment.
 
 
 ## Tools & resources used
@@ -88,15 +95,37 @@ React Native Navigaton
 ````
 npm install @react-navigation/native @react-navigation/native-stack
 expo install react-native-screens react-native-safe-area-context
+`````
+
+#### 7. Set up Google Firebase
+
+- Go to: https://firebase.google.com/ and log into the console
+- Create a new project and name it (disable Google Analytics)
+- Go to Build -> Firestore Database -> Create Database -> Pick region
+- Choose 'in production mode' -> Next
+- Go to 'Rules'
+- Set below line in the configuration to 'true':
+````
+allow read, write: if false;
+````
+- Then -> Publish.
+
+- Then set up a collection for 'messages'. The app already includes all the code for the collection to be filled automatically.
+
+- You will find the Firebase configuration info in the App.js file:
+````
+ // Firebase configuration
+  const firebaseConfig = {}
+````
 
 
-#### 7. Run the project
+#### 8. Run the project
 ````
 npx expo start
 ````
 This command will bring up a list of other commands you can use to start your project on simulators and emulators.
 
-#### 8. Use Emulators
+#### 9. Use Emulators
 
 - Android Studio - https://developer.android.com/studio
 and follow this guide to set up a virtual device:
@@ -106,7 +135,7 @@ https://developer.android.com/studio/run/managing-avds
 ````
 xcode-select --install
 open -a Simulator
-`````
+````
 
 ## Licenses
 

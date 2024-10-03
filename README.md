@@ -33,6 +33,10 @@ before joining the chat (Screen 2 of 2).
 - Names of Chat participants are appearing in the speech bubbles, but not yet when imagery / maps are sent.
 - CSS needs to be fixed a bit for light/ dark background adjustment.
 
+## The app
+
+
+
 
 ## Tools & resources used
 

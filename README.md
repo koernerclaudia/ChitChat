@@ -28,9 +28,6 @@ before joining the chat (Screen 2 of 2).
 - Data can be stored online (Firebase Cloud Storage) and offline, users can clear the screen.
 - extra: I have added system messages that show when a person has entered the chat.
 
-  ![Simulator Screenshot - iPhone 16 - 2024-10-03 at 13 00 38](https://github.com/user-attachments/assets/6d2d7534-7f70-4f4b-8ee7-907fe6eda6ad)
-
-
 ## WIP features:
 
 - Names of Chat participants are appearing in the speech bubbles, but not yet when imagery / maps are sent.

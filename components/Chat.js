@@ -247,7 +247,10 @@ const renderInputToolbar = (props) => {
       />
 
  {/* Button to delete cached messages - messages are only deleted locally, not from Firebase. Works in online and offline mode. */}
- <TouchableOpacity style={styles.clearButton} onPress={deleteCachedMessages}>
+ <TouchableOpacity style={styles.clearButton} onPress={deleteCachedMessages}
+ accessibilityLabel="Clear Cached Messages."
+  accessibilityHint="Clears the screen of all cached messages."
+  accessibilityRole="button">
         <Text style={styles.clearButtonText}>Clear Cached Messages</Text>
       </TouchableOpacity>
 

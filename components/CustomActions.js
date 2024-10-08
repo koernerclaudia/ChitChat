@@ -118,11 +118,12 @@ const CustomAction = ({ wrapperStyle, iconTextStyle, onSend, storage, userID, on
             onSend([message]);
         });
     };
-    
-
 
 return (
-    <TouchableOpacity style={styles.container} onPress={onActionPress}>
+    <TouchableOpacity style={styles.container} onPress={onActionPress}
+    accessibilityLabel="Opens the action menu."
+  accessibilityHint="Opens a menu to choose from sending an image from your library, taking a photo to send, or sending your current location."
+  accessibilityRole="button">
     <View style={[styles.wrapper, wrapperStyle]}>
       <Text style={[styles.iconText, iconTextStyle]}>+</Text>
     </View>
